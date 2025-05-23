@@ -1,0 +1,16 @@
+no/spond/club/service/RegistrationFormService.class
+no/spond/club/dto/MemberTypeDto.class
+no/spond/club/model/Group.class
+no/spond/club/repository/GroupRepository.class
+no/spond/club/model/Registration.class
+no/spond/club/dto/GroupDto.class
+no/spond/club/model/RegistrationForm.class
+no/spond/club/model/MemberType.class
+no/spond/club/repository/RegistrationRepository.class
+no/spond/club/dto/RegistrationRequestDto.class
+no/spond/club/dto/RegistrationFormDto.class
+no/spond/club/repository/RegistrationFormRepository.class
+no/spond/club/ClubMembershipApplication.class
+no/spond/club/controller/RegistrationController.class
+no/spond/club/repository/MemberTypeRepository.class
+no/spond/club/DataInitializer.class
