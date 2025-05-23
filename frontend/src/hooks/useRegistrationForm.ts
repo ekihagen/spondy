@@ -31,7 +31,7 @@ export const useRegistrationForm = () => {
     try {
       setSubmitting(true);
       setError(null);
-      await api.submitRegistration(form.id, data);
+      await api.submitRegistration(form.formId, data);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registrering feilet');
@@ -44,8 +44,8 @@ export const useRegistrationForm = () => {
   const isRegistrationOpen = () => {
     if (!form) return false;
     const today = new Date();
-    const registrationDate = new Date(form.registrationDate);
-    return registrationDate >= today;
+    const registrationDate = new Date(form.registrationOpens);
+    return registrationDate <= today;
   };
 
   return {

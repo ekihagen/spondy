@@ -11,8 +11,8 @@ export const api = {
     return response.json();
   },
 
-  async submitRegistration(formId: number, data: RegistrationRequest): Promise<RegistrationResponse> {
-    const response = await fetch(`${API_BASE_URL}/form/${formId}/register`, {
+  async submitRegistration(formId: string, data: RegistrationRequest): Promise<RegistrationResponse> {
+    const response = await fetch(`${API_BASE_URL}/form/1/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

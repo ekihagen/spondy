@@ -1,29 +1,23 @@
 package no.spond.club.dto;
 
-import java.math.BigDecimal;
-
 public class MemberTypeDto {
-    private Long id;
+    private String id;
     private String name;
-    private String description;
-    private BigDecimal price;
     
     // Constructors
     public MemberTypeDto() {}
     
-    public MemberTypeDto(Long id, String name, String description, BigDecimal price) {
+    public MemberTypeDto(String id, String name) {
         this.id = id;
         this.name = name;
-        this.description = description;
-        this.price = price;
     }
     
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -33,21 +27,5 @@ public class MemberTypeDto {
     
     public void setName(String name) {
         this.name = name;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
-    public BigDecimal getPrice() {
-        return price;
-    }
-    
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 } 

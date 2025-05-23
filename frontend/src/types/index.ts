@@ -1,8 +1,6 @@
 export interface MemberType {
-  id: number;
+  id: string;
   name: string;
-  description: string;
-  price: number;
 }
 
 export interface Group {
@@ -12,12 +10,12 @@ export interface Group {
 }
 
 export interface RegistrationForm {
-  id: number;
+  clubId: string;
+  formId: string;
   title: string;
-  description: string;
-  registrationDate: string;
+  description?: string;
+  registrationOpens: string;
   memberTypes: MemberType[];
-  groups: Group[];
 }
 
 export interface RegistrationRequest {
@@ -25,8 +23,7 @@ export interface RegistrationRequest {
   email: string;
   phoneNumber: string;
   birthDate: string;
-  memberTypeId: number;
-  groupId: number;
+  memberTypeId: string;
 }
 
 export interface RegistrationResponse {

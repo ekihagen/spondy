@@ -22,23 +22,19 @@ public class RegistrationRequestDto {
     @Past(message = "Fødselsdato må være i fortiden")
     private LocalDate birthDate;
     
-    @NotNull(message = "Medlemstype må velges")
-    private Long memberTypeId;
-    
-    @NotNull(message = "Gruppe må velges")
-    private Long groupId;
+    @NotBlank(message = "Medlemstype må velges")
+    private String memberTypeId;
     
     // Constructors
     public RegistrationRequestDto() {}
     
     public RegistrationRequestDto(String fullName, String email, String phoneNumber, 
-                                 LocalDate birthDate, Long memberTypeId, Long groupId) {
+                                 LocalDate birthDate, String memberTypeId) {
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.memberTypeId = memberTypeId;
-        this.groupId = groupId;
     }
     
     // Getters and Setters
@@ -74,19 +70,11 @@ public class RegistrationRequestDto {
         this.birthDate = birthDate;
     }
     
-    public Long getMemberTypeId() {
+    public String getMemberTypeId() {
         return memberTypeId;
     }
     
-    public void setMemberTypeId(Long memberTypeId) {
+    public void setMemberTypeId(String memberTypeId) {
         this.memberTypeId = memberTypeId;
-    }
-    
-    public Long getGroupId() {
-        return groupId;
-    }
-    
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
     }
 } 

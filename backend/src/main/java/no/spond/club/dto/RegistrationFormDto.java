@@ -1,37 +1,44 @@
 package no.spond.club.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class RegistrationFormDto {
-    private Long id;
+    private String clubId;
+    private String formId;
     private String title;
     private String description;
-    private LocalDate registrationDate;
+    private LocalDateTime registrationOpens;
     private List<MemberTypeDto> memberTypes;
-    private List<GroupDto> groups;
     
     // Constructors
     public RegistrationFormDto() {}
     
-    public RegistrationFormDto(Long id, String title, String description, 
-                              LocalDate registrationDate, List<MemberTypeDto> memberTypes, 
-                              List<GroupDto> groups) {
-        this.id = id;
+    public RegistrationFormDto(String clubId, String formId, String title, String description, 
+                              LocalDateTime registrationOpens, List<MemberTypeDto> memberTypes) {
+        this.clubId = clubId;
+        this.formId = formId;
         this.title = title;
         this.description = description;
-        this.registrationDate = registrationDate;
+        this.registrationOpens = registrationOpens;
         this.memberTypes = memberTypes;
-        this.groups = groups;
     }
     
     // Getters and Setters
-    public Long getId() {
-        return id;
+    public String getClubId() {
+        return clubId;
     }
     
-    public void setId(Long id) {
-        this.id = id;
+    public void setClubId(String clubId) {
+        this.clubId = clubId;
+    }
+    
+    public String getFormId() {
+        return formId;
+    }
+    
+    public void setFormId(String formId) {
+        this.formId = formId;
     }
     
     public String getTitle() {
@@ -50,12 +57,12 @@ public class RegistrationFormDto {
         this.description = description;
     }
     
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
+    public LocalDateTime getRegistrationOpens() {
+        return registrationOpens;
     }
     
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setRegistrationOpens(LocalDateTime registrationOpens) {
+        this.registrationOpens = registrationOpens;
     }
     
     public List<MemberTypeDto> getMemberTypes() {
@@ -64,13 +71,5 @@ public class RegistrationFormDto {
     
     public void setMemberTypes(List<MemberTypeDto> memberTypes) {
         this.memberTypes = memberTypes;
-    }
-    
-    public List<GroupDto> getGroups() {
-        return groups;
-    }
-    
-    public void setGroups(List<GroupDto> groups) {
-        this.groups = groups;
     }
 } 

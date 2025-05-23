@@ -17,8 +17,7 @@ const registrationSchema = z.object({
   email: z.string().email('Ugyldig e-postadresse'),
   phoneNumber: z.string().min(8, 'Telefonnummer må være minst 8 siffer'),
   birthDate: z.string().min(1, 'Fødselsdato er påkrevd'),
-  memberTypeId: z.number().min(1, 'Medlemstype må velges'),
-  groupId: z.number().min(1, 'Gruppe må velges'),
+  memberTypeId: z.string().min(1, 'Medlemstype må velges'),
 });
 
 type FormData = z.infer<typeof registrationSchema>;
@@ -117,12 +116,18 @@ export const RegistrationWizard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8">
       <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        {/* Spond header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-blue-900 mb-2">Spond Club</h1>
+          <p className="text-blue-600">Medlemsregistrering</p>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-xl p-8 border border-blue-100">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{form.title}</h1>
-            <p className="text-gray-600">{form.description}</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{form.title}</h2>
+            {form.description && <p className="text-gray-600">{form.description}</p>}
           </div>
 
           {/* Progress indicator */}
@@ -131,9 +136,9 @@ export const RegistrationWizard: React.FC = () => {
               {[1, 2, 3].map((step) => (
                 <div key={step} className="flex items-center">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
                       step <= currentStep
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-blue-600 text-white shadow-lg'
                         : 'bg-gray-200 text-gray-600'
                     }`}
                   >
@@ -141,7 +146,7 @@ export const RegistrationWizard: React.FC = () => {
                   </div>
                   {step < 3 && (
                     <div
-                      className={`w-16 h-1 mx-2 ${
+                      className={`w-20 h-1 mx-2 transition-all ${
                         step < currentStep ? 'bg-blue-600' : 'bg-gray-200'
                       }`}
                     />
@@ -149,8 +154,8 @@ export const RegistrationWizard: React.FC = () => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-2 text-sm text-gray-600">
-              <span>Velg type og gruppe</span>
+            <div className="flex justify-between mt-3 text-sm text-gray-600">
+              <span>Velg medlemstype</span>
               <span>Personlig informasjon</span>
               <span>Bekreft og send</span>
             </div>

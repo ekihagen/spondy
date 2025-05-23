@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, Users, CreditCard } from 'lucide-react';
+import { ChevronRight, CreditCard } from 'lucide-react';
 import type { RegistrationForm } from '../types';
 import type { UseFormRegister, FieldErrors, UseFormWatch, UseFormSetValue } from 'react-hook-form';
 
@@ -21,18 +21,13 @@ export const StepOne: React.FC<StepOneProps> = ({
   onNext,
 }) => {
   const selectedMemberTypeId = watch('memberTypeId');
-  const selectedGroupId = watch('groupId');
 
   const selectedMemberType = form.memberTypes.find(mt => mt.id === selectedMemberTypeId);
 
-  const canProceed = selectedMemberTypeId && selectedGroupId;
+  const canProceed = selectedMemberTypeId;
 
-  const handleMemberTypeSelect = (memberTypeId: number) => {
+  const handleMemberTypeSelect = (memberTypeId: string) => {
     setValue('memberTypeId', memberTypeId);
-  };
-
-  const handleGroupSelect = (groupId: number) => {
-    setValue('groupId', groupId);
   };
 
   return (
@@ -40,7 +35,7 @@ export const StepOne: React.FC<StepOneProps> = ({
       {/* Medlemstyper */}
       <div>
         <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-          <CreditCard className="w-5 h-5 mr-2" />
+          <CreditCard className="w-5 h-5 mr-2 text-blue-600" />
           Velg medlemstype
         </h2>
         <div className="space-y-3">
@@ -49,25 +44,30 @@ export const StepOne: React.FC<StepOneProps> = ({
               key={memberType.id}
               className={`border rounded-lg p-4 cursor-pointer transition-all ${
                 selectedMemberTypeId === memberType.id
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
+                  : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
               }`}
               onClick={() => handleMemberTypeSelect(memberType.id)}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <h3 className="font-medium text-gray-900">{memberType.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{memberType.description}</p>
                 </div>
-                <div className="text-right">
-                  <span className="text-lg font-semibold text-gray-900">
-                    {memberType.price.toLocaleString('nb-NO')} kr
-                  </span>
+                <div className="flex items-center">
+                  <div className={`w-4 h-4 rounded-full border-2 ${
+                    selectedMemberTypeId === memberType.id
+                      ? 'border-blue-500 bg-blue-500'
+                      : 'border-gray-300'
+                  }`}>
+                    {selectedMemberTypeId === memberType.id && (
+                      <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                    )}
+                  </div>
                 </div>
               </div>
               <input
                 type="radio"
-                {...register('memberTypeId', { valueAsNumber: true })}
+                {...register('memberTypeId')}
                 value={memberType.id}
                 className="sr-only"
               />
@@ -79,47 +79,14 @@ export const StepOne: React.FC<StepOneProps> = ({
         )}
       </div>
 
-      {/* Grupper */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-          <Users className="w-5 h-5 mr-2" />
-          Velg gruppe
-        </h2>
-        <div className="space-y-3">
-          {form.groups.map((group) => (
-            <div
-              key={group.id}
-              className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                selectedGroupId === group.id
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-              onClick={() => handleGroupSelect(group.id)}
-            >
-              <h3 className="font-medium text-gray-900">{group.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{group.description}</p>
-              <input
-                type="radio"
-                {...register('groupId', { valueAsNumber: true })}
-                value={group.id}
-                className="sr-only"
-              />
-            </div>
-          ))}
-        </div>
-        {errors.groupId && (
-          <p className="mt-2 text-sm text-red-600">{String(errors.groupId.message)}</p>
-        )}
-      </div>
-
       {/* Sammendrag */}
       {selectedMemberType && (
-        <div className="bg-gray-50 rounded-lg p-4">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
           <h3 className="font-medium text-gray-900 mb-2">Valgt medlemstype:</h3>
           <div className="flex justify-between items-center">
             <span className="text-gray-700">{selectedMemberType.name}</span>
-            <span className="font-semibold text-gray-900">
-              {selectedMemberType.price.toLocaleString('nb-NO')} kr
+            <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+              Valgt
             </span>
           </div>
         </div>
@@ -131,9 +98,9 @@ export const StepOne: React.FC<StepOneProps> = ({
           type="button"
           onClick={onNext}
           disabled={!canProceed}
-          className={`flex items-center px-6 py-2 rounded-md font-medium transition-colors ${
+          className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
             canProceed
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
