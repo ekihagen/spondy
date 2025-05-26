@@ -8,7 +8,7 @@ docker stop spondy-postgres-dev spondy-backend-dev 2>/dev/null || true
 docker rm spondy-postgres-dev spondy-backend-dev 2>/dev/null || true
 
 # Build and start database + backend
-docker compose -f docker-compose.dev.yml up -d --build
+docker-compose -f docker-compose.dev.yml up -d --build
 
 echo "✅ PostgreSQL + Backend started!"
 echo ""
@@ -21,5 +21,5 @@ echo "   Backend:  http://localhost:8080"
 echo "   Database: localhost:5432"
 echo ""
 echo "📊 Check status:"
-echo "   docker compose -f docker-compose.dev.yml ps"
-echo "   docker compose -f docker-compose.dev.yml logs -f" 
+echo "   docker-compose -f docker-compose.dev.yml ps"
+echo "   docker-compose -f docker-compose.dev.yml logs -f" 

@@ -62,7 +62,7 @@ public class RegistrationControllerTest {
         );
         
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                "http://localhost:" + port + "/api/form/1/register",
+                "http://localhost:" + port + "/api/form/B171388180BC457D9887AD92B6CCFC86/register",
                 HttpMethod.POST,
                 new org.springframework.http.HttpEntity<>(request),
                 new ParameterizedTypeReference<Map<String, Object>>() {});
@@ -92,7 +92,7 @@ public class RegistrationControllerTest {
         );
         
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                "http://localhost:" + port + "/api/form/1/register",
+                "http://localhost:" + port + "/api/form/B171388180BC457D9887AD92B6CCFC86/register",
                 HttpMethod.POST,
                 new org.springframework.http.HttpEntity<>(request),
                 new ParameterizedTypeReference<Map<String, Object>>() {});
@@ -121,7 +121,7 @@ public class RegistrationControllerTest {
         );
         
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                "http://localhost:" + port + "/api/form/1/register",
+                "http://localhost:" + port + "/api/form/B171388180BC457D9887AD92B6CCFC86/register",
                 HttpMethod.POST,
                 new org.springframework.http.HttpEntity<>(request),
                 new ParameterizedTypeReference<Map<String, Object>>() {});

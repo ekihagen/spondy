@@ -1,0 +1,177 @@
+#!/bin/bash
+
+# Spondy Development Environment Manager
+# Usage: ./spondy [command]
+
+set -e
+
+# Get the real script location (resolve symlinks)
+if [[ -L "${BASH_SOURCE[0]}" ]]; then
+    # If it's a symlink, resolve it
+    SCRIPT_PATH="$(readlink "${BASH_SOURCE[0]}")"
+    # If readlink returns a relative path, make it absolute
+    if [[ "$SCRIPT_PATH" != /* ]]; then
+        SCRIPT_PATH="$(dirname "${BASH_SOURCE[0]}")/$SCRIPT_PATH"
+    fi
+else
+    SCRIPT_PATH="${BASH_SOURCE[0]}"
+fi
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+
+show_help() {
+    echo "🏆 Spondy Development Environment Manager"
+    echo ""
+    echo "Usage: spondy [command]"
+    echo ""
+    echo "Commands:"
+    echo "  fullstack    Start database only (both backend + frontend local)"
+    echo "  frontend     Start backend + database (frontend local development)"
+    echo "  backend      Start frontend + database (backend local development)"
+    echo "  production   Start all services in Docker (production mode)"
+    echo "  cleanup      Stop and remove all development containers"
+    echo "  status       Show status of all containers"
+    echo "  logs         Show logs from running containers"
+    echo "  help         Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  spondy fullstack   # Full local development"
+    echo "  spondy frontend    # Develop frontend with stable backend"
+    echo "  spondy backend     # Develop backend with stable frontend"
+    echo "  spondy cleanup     # Clean up everything"
+    echo ""
+    echo "🌐 URLs after starting:"
+    echo "  Frontend: http://localhost:5173 (local) or http://localhost:3000 (Docker)"
+    echo "  Backend:  http://localhost:8080"
+    echo "  Database: localhost:5432"
+}
+
+show_status() {
+    echo "📊 Service Status:"
+    echo ""
+    
+    # Check local processes
+    echo "🖥️  Local Processes:"
+    if [ -f "$SCRIPT_DIR/logs/backend.pid" ]; then
+        BACKEND_PID=$(cat "$SCRIPT_DIR/logs/backend.pid")
+        if kill -0 "$BACKEND_PID" 2>/dev/null; then
+            echo "   ✅ Backend running (PID: $BACKEND_PID)"
+        else
+            echo "   ❌ Backend not running (stale PID file)"
+        fi
+    else
+        echo "   ❌ Backend not running"
+    fi
+    
+    if [ -f "$SCRIPT_DIR/logs/frontend.pid" ]; then
+        FRONTEND_PID=$(cat "$SCRIPT_DIR/logs/frontend.pid")
+        if kill -0 "$FRONTEND_PID" 2>/dev/null; then
+            echo "   ✅ Frontend running (PID: $FRONTEND_PID)"
+        else
+            echo "   ❌ Frontend not running (stale PID file)"
+        fi
+    else
+        echo "   ❌ Frontend not running"
+    fi
+    
+    echo ""
+    echo "🐳 Docker Containers:"
+    # Check for running containers
+    if docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -q "spondy-"; then
+        docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep "spondy-"
+    else
+        echo "   No Spondy containers are currently running."
+    fi
+    
+    echo ""
+    echo "💾 Docker Volumes:"
+    docker volume ls | grep "spondy\|postgres" || echo "   No Spondy volumes found."
+}
+
+show_logs() {
+    echo "📋 Recent logs from running services:"
+    echo ""
+    
+    # Show logs from local processes if they exist
+    if [ -f "$SCRIPT_DIR/logs/backend.log" ]; then
+        echo "--- Backend (local process) ---"
+        tail -n 10 "$SCRIPT_DIR/logs/backend.log" 2>/dev/null || echo "Could not read backend logs"
+        echo ""
+    fi
+    
+    if [ -f "$SCRIPT_DIR/logs/frontend.log" ]; then
+        echo "--- Frontend (local process) ---"
+        tail -n 10 "$SCRIPT_DIR/logs/frontend.log" 2>/dev/null || echo "Could not read frontend logs"
+        echo ""
+    fi
+    
+    # Get all running spondy containers
+    containers=$(docker ps --filter "name=spondy-" --format "{{.Names}}" 2>/dev/null || true)
+    
+    if [ -n "$containers" ]; then
+        for container in $containers; do
+            echo "--- Logs from $container ---"
+            docker logs --tail=10 "$container" 2>/dev/null || echo "Could not fetch logs for $container"
+            echo ""
+        done
+    fi
+    
+    # If no logs found
+    if [ ! -f "$SCRIPT_DIR/logs/backend.log" ] && [ ! -f "$SCRIPT_DIR/logs/frontend.log" ] && [ -z "$containers" ]; then
+        echo "No Spondy services are currently running."
+    fi
+}
+
+case "${1:-help}" in
+    "fullstack")
+        echo "🚀 Starting fullstack development mode..."
+        echo "📝 Database in Docker, backend + frontend starting locally"
+        exec "$SCRIPT_DIR/dev-scripts/start-fullstack.sh"
+        ;;
+    
+    "frontend")
+        echo "🚀 Starting frontend development mode..."
+        echo "📝 Backend + database in Docker, frontend local"
+        exec "$SCRIPT_DIR/dev-scripts/start-backend-only.sh"
+        ;;
+    
+    "backend")
+        echo "🚀 Starting backend development mode..."
+        echo "📝 Frontend + database in Docker, backend local"
+        exec "$SCRIPT_DIR/dev-scripts/start-frontend-only.sh"
+        ;;
+    
+    "production")
+        echo "🚀 Starting production mode..."
+        echo "📝 All services in Docker"
+        cd "$SCRIPT_DIR"
+        docker-compose up -d --build
+        echo ""
+        echo "✅ Production environment started!"
+        echo "🌐 Frontend: http://localhost:3000"
+        echo "🌐 Backend:  http://localhost:8080"
+        ;;
+    
+    "cleanup")
+        echo "🧹 Cleaning up development environment..."
+        exec "$SCRIPT_DIR/dev-scripts/cleanup.sh"
+        ;;
+    
+    "status")
+        show_status
+        ;;
+    
+    "logs")
+        show_logs
+        ;;
+    
+    "help"|"--help"|"-h")
+        show_help
+        ;;
+    
+    *)
+        echo "❌ Unknown command: $1"
+        echo ""
+        show_help
+        exit 1
+        ;;
+esac 

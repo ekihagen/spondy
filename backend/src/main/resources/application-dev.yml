@@ -5,8 +5,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/spondy_club
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
+    username: spondy
+    password: spondy123
   
   jpa:
     hibernate:

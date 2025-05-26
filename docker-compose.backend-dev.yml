@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: spondy-postgres-backend-dev
+    environment:
+      POSTGRES_DB: spondy_club
+      POSTGRES_USER: spondy
+      POSTGRES_PASSWORD: spondy123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_backend_dev_data:/var/lib/postgresql/data
+    networks:
+      - spondy-backend-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spondy -d spondy_club"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: spondy-frontend-backend-dev
+    ports:
+      - "3000:8080"
+    networks:
+      - spondy-backend-dev-network
+
+networks:
+  spondy-backend-dev-network:
+    driver: bridge
+
+volumes:
+  postgres_backend_dev_data: 

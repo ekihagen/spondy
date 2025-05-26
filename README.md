@@ -2,6 +2,8 @@
 
 En full-stack applikasjon for å håndtere offentlige medlemskapsregistreringsskjemaer for klubber.
 
+🌐 **Live produksjon**: https://spondy.rotchess.com
+
 ## Teknologivalg
 
 ### Backend
@@ -9,7 +11,7 @@ En full-stack applikasjon for å håndtere offentlige medlemskapsregistreringssk
 - **PostgreSQL** - Pålitelig relationsdatabase
 - **Spring Data JPA** - Forenkler databaseoperasjoner
 - **Spring Validation** - Innebygd validering
-- **Docker Compose** - For enkel lokal utvikling
+- **Docker Compose** - For enkel lokal utvikling og produksjon
 
 ### Frontend  
 - **React 18** med TypeScript - Moderne komponentbasert utvikling
@@ -17,6 +19,12 @@ En full-stack applikasjon for å håndtere offentlige medlemskapsregistreringssk
 - **Tailwind CSS** - Utility-first CSS framework for rask styling
 - **Lucide React** - Moderne ikoner
 - **React Hook Form** - Effektiv form-håndtering med validering
+
+### Produksjon
+- **Docker** - Containerisering for konsistent deployment
+- **nginx** - Reverse proxy med SSL/TLS terminering
+- **Let's Encrypt** - Automatiske SSL-sertifikater
+- **Raspberry Pi** - Ubuntu 24.10 ARM64
 
 ## Kjøring av applikasjonen
 
@@ -55,7 +63,22 @@ npm run dev
 # Backend: http://localhost:8080 (Docker)
 ```
 
-#### 3. Full lokal utvikling (kun DB i Docker)
+#### 3. Backend-utvikling (frontend + DB i Docker)
+```bash
+# Start frontend og database i Docker
+./dev-scripts/start-frontend-only.sh
+
+# Start backend lokalt (i ny terminal)
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+
+# URLs:
+# Frontend: http://localhost:3000 (Docker)
+# Backend: http://localhost:8080 (lokal utvikling)
+# Database: localhost:5432 (Docker)
+```
+
+#### 4. Full lokal utvikling (kun DB i Docker)
 ```bash
 # Start kun database i Docker
 ./dev-scripts/start-db-only.sh
@@ -75,7 +98,7 @@ npm run dev
 # Database: localhost:5432 (Docker)
 ```
 
-#### 4. Rydde opp
+#### 5. Rydde opp
 ```bash
 # Stopp og fjern alle utviklingscontainere
 ./dev-scripts/cleanup.sh
@@ -89,9 +112,9 @@ npm run dev
    cd spondy
    ```
 
-2. **Start kun database:**
+2. **Start fullstack development:**
    ```bash
-   ./dev-scripts/start-db-only.sh
+   spondy fullstack
    ```
 
 3. **Start backend (i ny terminal):**
@@ -110,6 +133,20 @@ npm run dev
 5. **Åpne applikasjonen:**
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:8080
+
+### 🚀 Spondy Command (Anbefalt)
+
+For enklere utvikling kan du bruke den nye `spondy` kommandoen:
+
+```bash
+spondy help        # Vis alle kommandoer
+spondy fullstack   # Full lokal utvikling
+spondy frontend    # Frontend-utvikling
+spondy backend     # Backend-utvikling
+spondy production  # Produksjonsmodus
+spondy status      # Vis container-status
+spondy cleanup     # Rydd opp alt
+```
 
 ### Testing
 
@@ -161,12 +198,31 @@ frontend/
 └── tests/              # Tests
 ```
 
-## Forbedringsforslag
+## Produksjonsdeployment
 
-- **Autentisering og autorisasjon** - Legge til sikkerhet for admin-funksjoner
-- **Email notifikasjoner** - Sende bekreftelse til registrerte medlemmer  
-- **Admin dashboard** - UI for å administrere skjemaer og se registreringer
-- **Flerstegs validering** - Mer avanserte valideringsregler
-- **Internasjonalisering** - Støtte for flere språk
-- **Rate limiting** - Beskytte mot spam-registreringer
-- **Analytics** - Sporing av registreringsstatistikk 
+### Rask deployment til Raspberry Pi
+```bash
+# Bygg produksjonsbilder
+docker build -t spondy-backend:prod ./backend
+docker build -t spondy-frontend:prod ./frontend
+
+# Sikker deployment (anbefalt)
+cp deploy.config.template deploy.config
+# Rediger deploy.config med dine verdier
+./deploy-to-pi-secure.sh
+```
+
+**Sikkerhet:** Se [DEPLOYMENT_SECURITY.md](DEPLOYMENT_SECURITY.md) for sikker deployment uten å eksponere credentials.
+
+### Produksjonsarkitektur
+- **Host nginx** (port 80/443) med SSL-terminering
+- **Docker containers** på localhost:
+  - PostgreSQL: `127.0.0.1:5433`
+  - Backend: `127.0.0.1:8081`
+  - Frontend: `127.0.0.1:81`
+
+### Dokumentasjon
+- **[docs/](docs/)** - Komplett dokumentasjon
+- **[Development Guide](docs/development.md)** - Lokal utvikling
+- **[Production Deployment](docs/deployment.md)** - Produksjonsdeployment
+- **[Nginx Configuration](docs/nginx.md)** - Reverse proxy oppsett

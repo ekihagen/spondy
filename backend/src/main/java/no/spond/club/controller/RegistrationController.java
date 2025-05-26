@@ -44,7 +44,7 @@ public class RegistrationController {
     }
     
     @GetMapping("/form/{id}")
-    public ResponseEntity<Map<String, Object>> getFormById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getFormById(@PathVariable String id) {
         try {
             RegistrationFormDto form = registrationFormService.getFormById(id);
             Map<String, Object> response = new HashMap<>();
@@ -62,7 +62,7 @@ public class RegistrationController {
     
     @PostMapping("/form/{formId}/register")
     public ResponseEntity<Map<String, Object>> registerMember(
-            @PathVariable Long formId,
+            @PathVariable String formId,
             @Valid @RequestBody RegistrationRequestDto request,
             BindingResult bindingResult) {
         

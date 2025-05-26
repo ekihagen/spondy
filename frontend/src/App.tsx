@@ -1,4 +1,3 @@
-import React from 'react';
 import { RegistrationWizard } from './components/RegistrationWizard';
 import './index.css';
 

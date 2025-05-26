@@ -280,5 +280,15 @@ local.properties
 # ======= DOCKER =======
 .dockerignore
 
+# ======= DEPLOYMENT & SECURITY =======
+# Deployment configuration files (contain sensitive info)
+deploy.config
+.env.deploy
+*.pem
+*.key
+
+# Production environment files
+production.env
+
 # ======= MISC =======
-*.orig 
+*.orig

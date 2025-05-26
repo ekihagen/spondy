@@ -73,7 +73,7 @@ export const api = {
 
   async submitRegistration(formId: string, data: RegistrationRequest): Promise<RegistrationResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/form/1/register`, {
+      const response = await fetch(`${API_BASE_URL}/form/${formId}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

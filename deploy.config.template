@@ -1,0 +1,12 @@
+# Deployment Configuration Template
+# Copy this file to deploy.config and fill in your actual values
+# DO NOT commit deploy.config to git!
+
+# Raspberry Pi connection details
+PI_HOST="192.168.1.100"          # Your Pi's IP address
+PI_USER="your-username"          # SSH username
+PI_PASSWORD="your-password"      # SSH password (or use SSH keys instead)
+DEPLOY_DIR="/home/your-username/spondy-prod"  # Deployment directory on Pi
+
+# Optional: Use SSH key instead of password
+# PI_SSH_KEY="/path/to/your/private/key"  # Uncomment to use SSH key authentication 

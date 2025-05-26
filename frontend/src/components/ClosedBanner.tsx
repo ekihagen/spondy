@@ -27,7 +27,7 @@ export const ClosedBanner: React.FC<ClosedBannerProps> = ({ form }) => {
               <span className="text-orange-800 font-medium">Registrering stengt</span>
             </div>
             <p className="text-orange-700">
-              Registreringsfristen var {formatDate(form.registrationDate)}
+              Registreringen åpnet {formatDate(form.registrationOpens)}
             </p>
           </div>
           <p className="text-gray-600 mb-6">{form.description}</p>

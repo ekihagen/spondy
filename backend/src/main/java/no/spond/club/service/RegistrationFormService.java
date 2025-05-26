@@ -22,8 +22,8 @@ public class RegistrationFormService {
     }
     
     @Transactional(readOnly = true)
-    public RegistrationFormDto getFormById(Long id) {
-        if (id == null || id <= 0) {
+    public RegistrationFormDto getFormById(String id) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("Ugyldig skjema-ID");
         }
         return getDefaultForm(); // Return the same form for any valid ID
@@ -47,9 +47,9 @@ public class RegistrationFormService {
         );
     }
     
-    public Long registerMember(Long formId, RegistrationRequestDto request) {
+    public Long registerMember(String formId, RegistrationRequestDto request) {
         // Validate form ID
-        if (formId == null || formId <= 0) {
+        if (formId == null || formId.trim().isEmpty()) {
             throw new IllegalArgumentException("Ugyldig skjema-ID");
         }
         
