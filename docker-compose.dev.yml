@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: spondy-postgres
+    container_name: spondy-postgres-dev
     environment:
       POSTGRES_DB: spondy_club
       POSTGRES_USER: spondy
@@ -11,9 +11,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_dev_data:/var/lib/postgresql/data
     networks:
-      - spondy-network
+      - spondy-dev-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U spondy -d spondy_club"]
       interval: 10s
@@ -24,7 +24,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: spondy-backend
+    container_name: spondy-backend-dev
     environment:
       SPRING_PROFILES_ACTIVE: docker
     ports:
@@ -33,7 +33,10 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - spondy-network
+      - spondy-dev-network
+    volumes:
+      # Mount source code for hot reload (if using Spring Boot DevTools)
+      - ./backend/src:/app/src:ro
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
@@ -41,22 +44,9 @@ services:
       retries: 3
       start_period: 60s
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: spondy-frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      backend:
-        condition: service_healthy
-    networks:
-      - spondy-network
-
 networks:
-  spondy-network:
+  spondy-dev-network:
     driver: bridge
 
 volumes:
-  postgres_data: 
+  postgres_dev_data: 

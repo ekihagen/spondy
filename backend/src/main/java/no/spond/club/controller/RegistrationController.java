@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 public class RegistrationController {
     
     private final RegistrationFormService registrationFormService;

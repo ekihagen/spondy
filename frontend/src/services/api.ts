@@ -1,6 +1,16 @@
 import type { RegistrationForm, RegistrationRequest, RegistrationResponse } from '../types';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+// Detect environment and set appropriate API base URL
+const getApiBaseUrl = () => {
+  // If running in development mode (Vite dev server)
+  if (import.meta.env.DEV) {
+    return 'http://localhost:8080/api';
+  }
+  // If running in production (served by nginx with proxy)
+  return '/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export const api = {
   async getForm(): Promise<RegistrationForm> {

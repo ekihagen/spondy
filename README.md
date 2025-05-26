@@ -21,12 +21,67 @@ En full-stack applikasjon for å håndtere offentlige medlemskapsregistreringssk
 ## Kjøring av applikasjonen
 
 ### Forutsetninger
-- Docker og Docker Compose
-- Node.js 18+ og npm/yarn
-- Java 17+
-- Maven
+- Docker
+- Node.js 18+ og npm/yarn (for lokal frontend utvikling)
+- Java 17+ og Maven (for lokal backend utvikling)
 
-### Hurtigstart
+### Utviklingsalternativer
+
+Vi tilbyr flere fleksible måter å kjøre applikasjonen på, avhengig av hva du jobber med:
+
+#### 1. Full produksjon (alle tjenester i Docker)
+```bash
+# Start alt i Docker
+docker compose up -d --build
+
+# URLs:
+# Frontend: http://localhost:3000
+# Backend: http://localhost:8080
+# Database: localhost:5432
+```
+
+#### 2. Frontend-utvikling (backend + DB i Docker)
+```bash
+# Start backend og database i Docker
+./dev-scripts/start-backend-only.sh
+
+# Start frontend lokalt (i ny terminal)
+cd frontend
+npm install
+npm run dev
+
+# URLs:
+# Frontend: http://localhost:5173 (lokal utvikling)
+# Backend: http://localhost:8080 (Docker)
+```
+
+#### 3. Full lokal utvikling (kun DB i Docker)
+```bash
+# Start kun database i Docker
+./dev-scripts/start-db-only.sh
+
+# Start backend lokalt (i ny terminal)
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Start frontend lokalt (i ny terminal)
+cd frontend
+npm install
+npm run dev
+
+# URLs:
+# Frontend: http://localhost:5173
+# Backend: http://localhost:8080
+# Database: localhost:5432 (Docker)
+```
+
+#### 4. Rydde opp
+```bash
+# Stopp og fjern alle utviklingscontainere
+./dev-scripts/cleanup.sh
+```
+
+### Hurtigstart (anbefalt for nye utviklere)
 
 1. **Klon repositoryet:**
    ```bash
@@ -34,15 +89,15 @@ En full-stack applikasjon for å håndtere offentlige medlemskapsregistreringssk
    cd spondy
    ```
 
-2. **Start databasen:**
+2. **Start kun database:**
    ```bash
-   docker-compose up -d postgres
+   ./dev-scripts/start-db-only.sh
    ```
 
-3. **Start backend:**
+3. **Start backend (i ny terminal):**
    ```bash
    cd backend
-   ./mvnw spring-boot:run
+   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
    ```
 
 4. **Start frontend (i ny terminal):**
