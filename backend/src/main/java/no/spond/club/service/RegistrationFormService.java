@@ -1,9 +1,6 @@
 package no.spond.club.service;
 
 import no.spond.club.dto.*;
-import no.spond.club.model.*;
-import no.spond.club.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,20 +12,8 @@ import java.util.List;
 @Transactional
 public class RegistrationFormService {
     
-    private final RegistrationFormRepository formRepository;
-    private final RegistrationRepository registrationRepository;
-    private final MemberTypeRepository memberTypeRepository;
-    private final GroupRepository groupRepository;
-    
-    @Autowired
-    public RegistrationFormService(RegistrationFormRepository formRepository,
-                                  RegistrationRepository registrationRepository,
-                                  MemberTypeRepository memberTypeRepository,
-                                  GroupRepository groupRepository) {
-        this.formRepository = formRepository;
-        this.registrationRepository = registrationRepository;
-        this.memberTypeRepository = memberTypeRepository;
-        this.groupRepository = groupRepository;
+    public RegistrationFormService() {
+        // Constructor for service with hardcoded data
     }
     
     @Transactional(readOnly = true)
