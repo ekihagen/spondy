@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,9 +44,8 @@ public class RegistrationControllerTest {
                 "Test Testesen",
                 "test@example.com",
                 "12345678",
-                LocalDate.of(1990, 1, 1),
-                1L, // Første medlemstype
-                1L  // Første gruppe
+                "15.06.1990",
+                "8FE4113D4E4020E0DCF887803A886981" // Active Member
         );
         
         ResponseEntity<String> response = restTemplate.postForEntity(

@@ -55,9 +55,36 @@ public class RegistrationFormService {
     }
     
     public Long registerMember(Long formId, RegistrationRequestDto request) {
-        // Simple registration logic - in real app would validate against actual form
-        // For now, just save a mock registration
-        return 1L; // Return a mock registration ID
+        // Validate birth date format and that it's in the past
+        if (!request.isValidBirthDate()) {
+            throw new RuntimeException("Ugyldig fødselsdato. Må være i format DD.MM.YYYY og i fortiden.");
+        }
+        
+        // Validate phone number is numeric only
+        if (!request.getPhoneNumber().matches("^\\d{8,11}$")) {
+            throw new RuntimeException("Telefonnummer må være mellom 8-11 siffer og kun inneholde tall.");
+        }
+        
+        // Validate that memberTypeId is one of the allowed values
+        List<String> allowedMemberTypes = Arrays.asList(
+            "8FE4113D4E4020E0DCF887803A886981", // Active Member
+            "4237C55C5CC3B4B082CBF2540612778E"  // Social Member
+        );
+        
+        if (!allowedMemberTypes.contains(request.getMemberTypeId())) {
+            throw new RuntimeException("Ugyldig medlemstype valgt.");
+        }
+        
+        // Log the registration details for debugging
+        System.out.println("Registrering mottatt:");
+        System.out.println("Navn: " + request.getFullName());
+        System.out.println("E-post: " + request.getEmail());
+        System.out.println("Telefon: " + request.getPhoneNumber());
+        System.out.println("Fødselsdato: " + request.getBirthDate());
+        System.out.println("Medlemstype: " + request.getMemberTypeId());
+        
+        // Simple registration logic - in real app would save to database
+        return System.currentTimeMillis(); // Return a unique registration ID
     }
 }
  

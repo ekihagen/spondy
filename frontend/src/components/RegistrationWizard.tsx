@@ -15,8 +15,8 @@ import type { RegistrationRequest } from '../types';
 const registrationSchema = z.object({
   fullName: z.string().min(1, 'Fullt navn er påkrevd'),
   email: z.string().email('Ugyldig e-postadresse'),
-  phoneNumber: z.string().min(8, 'Telefonnummer må være minst 8 siffer'),
-  birthDate: z.string().min(1, 'Fødselsdato er påkrevd'),
+  phoneNumber: z.string().min(8, 'Telefonnummer må være minst 8 siffer').regex(/^\d+$/, 'Telefonnummer kan kun inneholde tall'),
+  birthDate: z.string().min(1, 'Fødselsdato er påkrevd').regex(/^\d{2}\.\d{2}\.\d{4}$/, 'Fødselsdato må være i format DD.MM.YYYY'),
   memberTypeId: z.string().min(1, 'Medlemstype må velges'),
 });
 
@@ -96,6 +96,8 @@ export const RegistrationWizard: React.FC = () => {
           <StepTwo
             register={register}
             errors={errors}
+            setValue={setValue}
+            watch={watch}
             onNext={nextStep}
             onPrev={prevStep}
           />

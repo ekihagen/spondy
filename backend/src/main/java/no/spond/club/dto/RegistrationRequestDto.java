@@ -2,9 +2,10 @@ package no.spond.club.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class RegistrationRequestDto {
     
@@ -16,20 +17,23 @@ public class RegistrationRequestDto {
     private String email;
     
     @NotBlank(message = "Telefonnummer er påkrevd")
+    @Pattern(regexp = "^\\d{8,11}$", message = "Telefonnummer må være mellom 8-11 siffer")
     private String phoneNumber;
     
-    @NotNull(message = "Fødselsdato er påkrevd")
-    @Past(message = "Fødselsdato må være i fortiden")
-    private LocalDate birthDate;
+    @NotBlank(message = "Fødselsdato er påkrevd")
+    @Pattern(regexp = "^\\d{2}\\.\\d{2}\\.\\d{4}$", message = "Fødselsdato må være i format DD.MM.YYYY")
+    private String birthDate;
     
     @NotBlank(message = "Medlemstype må velges")
     private String memberTypeId;
+    
+    private static final DateTimeFormatter BIRTH_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     
     // Constructors
     public RegistrationRequestDto() {}
     
     public RegistrationRequestDto(String fullName, String email, String phoneNumber, 
-                                 LocalDate birthDate, String memberTypeId) {
+                                 String birthDate, String memberTypeId) {
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -62,11 +66,11 @@ public class RegistrationRequestDto {
         this.phoneNumber = phoneNumber;
     }
     
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
     
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
     
@@ -76,5 +80,20 @@ public class RegistrationRequestDto {
     
     public void setMemberTypeId(String memberTypeId) {
         this.memberTypeId = memberTypeId;
+    }
+    
+    // Helper method to parse birth date string to LocalDate
+    public LocalDate getBirthDateAsLocalDate() throws DateTimeParseException {
+        return LocalDate.parse(this.birthDate, BIRTH_DATE_FORMATTER);
+    }
+    
+    // Validation method to check if birth date is in the past
+    public boolean isValidBirthDate() {
+        try {
+            LocalDate parsedDate = getBirthDateAsLocalDate();
+            return parsedDate.isBefore(LocalDate.now());
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 } 
