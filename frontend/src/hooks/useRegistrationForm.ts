@@ -18,7 +18,7 @@ export const useRegistrationForm = () => {
         setForm(formData);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'En uventet feil oppstod ved henting av skjema');
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred while fetching the form');
       } finally {
         setLoading(false);
       }
@@ -29,7 +29,7 @@ export const useRegistrationForm = () => {
 
   const submitRegistration = async (data: RegistrationRequest) => {
     if (!form) {
-      throw new Error('Skjema er ikke lastet ennå');
+      throw new Error('Form is not loaded yet');
     }
 
     try {
@@ -40,7 +40,7 @@ export const useRegistrationForm = () => {
       setSubmitted(true);
       return response;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'En uventet feil oppstod under registrering';
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred during registration';
       setError(errorMessage);
       throw err;
     } finally {

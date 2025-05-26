@@ -6,7 +6,7 @@ export const LoadingSpinner: React.FC = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
         <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
-        <p className="text-gray-600">Laster registreringsskjema...</p>
+        <p className="text-gray-600">Loading registration form...</p>
       </div>
     </div>
   );

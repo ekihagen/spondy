@@ -1,228 +1,245 @@
-# Spond Club - Medlemskapsregistrering
+# Spondy Club - Membership Registration
 
-En full-stack applikasjon for å håndtere offentlige medlemskapsregistreringsskjemaer for klubber.
+A full-stack application for handling public membership registration forms for clubs and organizations.
 
-🌐 **Live produksjon**: https://spondy.rotchess.com
+🌐 **Live Production**: https://spondy.rotchess.com
 
-## Teknologivalg
+## 🚀 Quick Development Setup
 
-### Backend
-- **Spring Boot 3.x** med Java 17 - Robust og moden framework for rask utvikling
-- **PostgreSQL** - Pålitelig relationsdatabase
-- **Spring Data JPA** - Forenkler databaseoperasjoner
-- **Spring Validation** - Innebygd validering
-- **Docker Compose** - For enkel lokal utvikling og produksjon
+### Prerequisites
+- **Docker** - For database and containerized services
+- **Node.js 18+** and npm/yarn - For frontend development
+- **Java 17+** - For backend development (automatically detected if installed via Homebrew)
 
-### Frontend  
-- **React 18** med TypeScript - Moderne komponentbasert utvikling
-- **Vite** - Rask build-tool og dev server
-- **Tailwind CSS** - Utility-first CSS framework for rask styling
-- **Lucide React** - Moderne ikoner
-- **React Hook Form** - Effektiv form-håndtering med validering
+### ⚡ One-Command Setup (Recommended)
 
-### Produksjon
-- **Docker** - Containerisering for konsistent deployment
-- **nginx** - Reverse proxy med SSL/TLS terminering
-- **Let's Encrypt** - Automatiske SSL-sertifikater
-- **Raspberry Pi** - Ubuntu 24.10 ARM64
-
-## Kjøring av applikasjonen
-
-### Forutsetninger
-- Docker
-- Node.js 18+ og npm/yarn (for lokal frontend utvikling)
-- Java 17+ og Maven (for lokal backend utvikling)
-
-### Utviklingsalternativer
-
-Vi tilbyr flere fleksible måter å kjøre applikasjonen på, avhengig av hva du jobber med:
-
-#### 1. Full produksjon (alle tjenester i Docker)
 ```bash
-# Start alt i Docker
-docker compose up -d --build
+# Clone the repository
+git clone <repository-url>
+cd spondy
 
-# URLs:
-# Frontend: http://localhost:3000
-# Backend: http://localhost:8080
-# Database: localhost:5432
+# Start everything with one command
+spondy fullstack
 ```
 
-#### 2. Frontend-utvikling (backend + DB i Docker)
+This will automatically:
+- ✅ Start PostgreSQL database in Docker
+- ✅ Start Spring Boot backend locally with Java 17
+- ✅ Start React frontend locally with Vite
+- ✅ Set up all necessary environment variables
+
+**URLs after startup:**
+- 🌐 Frontend: http://localhost:5173 (or 5174 if 5173 is busy)
+- 🔧 Backend API: http://localhost:8080
+- 🗄️ Database: localhost:5432
+
+### 📋 Development Commands
+
 ```bash
-# Start backend og database i Docker
-./dev-scripts/start-backend-only.sh
-
-# Start frontend lokalt (i ny terminal)
-cd frontend
-npm install
-npm run dev
-
-# URLs:
-# Frontend: http://localhost:5173 (lokal utvikling)
-# Backend: http://localhost:8080 (Docker)
+spondy help        # Show all available commands
+spondy fullstack   # Full local development (recommended)
+spondy frontend    # Frontend development (backend in Docker)
+spondy backend     # Backend development (frontend in Docker)
+spondy production  # Production mode (all in Docker)
+spondy status      # Show service status
+spondy logs        # View logs from all services
+spondy cleanup     # Stop and clean up all services
 ```
 
-#### 3. Backend-utvikling (frontend + DB i Docker)
+### 🔧 Manual Setup (Alternative)
+
+If you prefer manual control:
+
 ```bash
-# Start frontend og database i Docker
-./dev-scripts/start-frontend-only.sh
-
-# Start backend lokalt (i ny terminal)
-cd backend
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-
-# URLs:
-# Frontend: http://localhost:3000 (Docker)
-# Backend: http://localhost:8080 (lokal utvikling)
-# Database: localhost:5432 (Docker)
-```
-
-#### 4. Full lokal utvikling (kun DB i Docker)
-```bash
-# Start kun database i Docker
+# 1. Start database only
 ./dev-scripts/start-db-only.sh
 
-# Start backend lokalt (i ny terminal)
+# 2. Start backend (in new terminal)
 cd backend
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
-# Start frontend lokalt (i ny terminal)
+# 3. Start frontend (in new terminal)
 cd frontend
 npm install
 npm run dev
-
-# URLs:
-# Frontend: http://localhost:5173
-# Backend: http://localhost:8080
-# Database: localhost:5432 (Docker)
 ```
 
-#### 5. Rydde opp
-```bash
-# Stopp og fjern alle utviklingscontainere
-./dev-scripts/cleanup.sh
-```
+## 🛠️ Technology Stack
 
-### Hurtigstart (anbefalt for nye utviklere)
+### Backend
+- **Spring Boot 3.x** with Java 17 - Robust and mature framework for rapid development
+- **PostgreSQL** - Reliable relational database
+- **Spring Data JPA** - Simplified database operations
+- **Spring Validation** - Built-in validation
+- **Maven** - Dependency management and build tool
 
-1. **Klon repositoryet:**
-   ```bash
-   git clone <repository-url>
-   cd spondy
-   ```
+### Frontend  
+- **React 18** with TypeScript - Modern component-based development
+- **Vite** - Fast build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework for rapid styling
+- **Lucide React** - Modern icons
+- **React Hook Form** - Efficient form handling with validation
 
-2. **Start fullstack development:**
-   ```bash
-   spondy fullstack
-   ```
+### Production
+- **Docker** - Containerization for consistent deployment
+- **nginx** - Reverse proxy with SSL/TLS termination
+- **Let's Encrypt** - Automatic SSL certificates
+- **Raspberry Pi** - Ubuntu 24.10 ARM64
 
-3. **Start backend (i ny terminal):**
-   ```bash
-   cd backend
-   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-   ```
+## 🎯 Features
 
-4. **Start frontend (i ny terminal):**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
+- ✅ Responsive wizard UI with 3 steps
+- ✅ Input validation and error handling
+- ✅ Future registration date handling
+- ✅ Success confirmation upon registration
+- ✅ REST API with comprehensive validation
+- ✅ PostgreSQL data persistence
+- ✅ Modern, accessible user interface
+- ✅ Mobile-responsive design
 
-5. **Åpne applikasjonen:**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:8080
+## 🏗️ Architecture
 
-### 🚀 Spondy Command (Anbefalt)
-
-For enklere utvikling kan du bruke den nye `spondy` kommandoen:
-
-```bash
-spondy help        # Vis alle kommandoer
-spondy fullstack   # Full lokal utvikling
-spondy frontend    # Frontend-utvikling
-spondy backend     # Backend-utvikling
-spondy production  # Produksjonsmodus
-spondy status      # Vis container-status
-spondy cleanup     # Rydd opp alt
-```
-
-### Testing
-
-**Backend tester:**
-```bash
-cd backend
-./mvnw test
-```
-
-**Frontend tester:**
-```bash
-cd frontend
-npm run test
-```
-
-## Funksjonalitet
-
-- ✅ Responsive wizard-UI med 3 steg
-- ✅ Validering av brukerinput
-- ✅ Håndtering av fremtidige registreringsdatoer
-- ✅ Suksess-melding ved vellykket registrering
-- ✅ REST API med validering
-- ✅ Persistering i PostgreSQL database
-
-## Arkitektur
-
-### Backend struktur
+### Backend Structure
 ```
 backend/
 ├── src/main/java/no/spond/club/
 │   ├── controller/     # REST controllers
 │   ├── service/        # Business logic
-│   ├── repository/     # Data access
+│   ├── repository/     # Data access layer
 │   ├── model/          # JPA entities
-│   └── dto/            # Data transfer objects
-└── src/test/           # Tests
+│   ├── dto/            # Data transfer objects
+│   └── config/         # Configuration classes
+└── src/test/           # Unit and integration tests
 ```
 
-### Frontend struktur
+### Frontend Structure
 ```
 frontend/
 ├── src/
-│   ├── components/     # React komponenter
-│   ├── pages/          # Sider
-│   ├── hooks/          # Custom hooks
-│   ├── services/       # API calls
-│   ├── types/          # TypeScript types
-│   └── utils/          # Hjelpefunksjoner
-└── tests/              # Tests
+│   ├── components/     # React components
+│   ├── pages/          # Page components
+│   ├── hooks/          # Custom React hooks
+│   ├── services/       # API service calls
+│   ├── types/          # TypeScript type definitions
+│   └── utils/          # Utility functions
+└── tests/              # Frontend tests
 ```
 
-## Produksjonsdeployment
+## 🧪 Testing
 
-### Rask deployment til Raspberry Pi
+### Backend Tests
 ```bash
-# Bygg produksjonsbilder
+cd backend
+./mvnw test
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm run test
+```
+
+## 🚀 Production Deployment
+
+### Quick Deployment to Raspberry Pi
+```bash
+# Build production images
 docker build -t spondy-backend:prod ./backend
 docker build -t spondy-frontend:prod ./frontend
 
-# Sikker deployment (anbefalt)
+# Secure deployment (recommended)
 cp deploy.config.template deploy.config
-# Rediger deploy.config med dine verdier
+# Edit deploy.config with your values
 ./deploy-to-pi-secure.sh
 ```
 
-**Sikkerhet:** Se [DEPLOYMENT_SECURITY.md](DEPLOYMENT_SECURITY.md) for sikker deployment uten å eksponere credentials.
-
-### Produksjonsarkitektur
-- **Host nginx** (port 80/443) med SSL-terminering
-- **Docker containers** på localhost:
+### Production Architecture
+- **Host nginx** (ports 80/443) with SSL termination
+- **Docker containers** on localhost:
   - PostgreSQL: `127.0.0.1:5433`
   - Backend: `127.0.0.1:8081`
   - Frontend: `127.0.0.1:81`
 
-### Dokumentasjon
-- **[docs/](docs/)** - Komplett dokumentasjon
-- **[Development Guide](docs/development.md)** - Lokal utvikling
-- **[Production Deployment](docs/deployment.md)** - Produksjonsdeployment
-- **[Nginx Configuration](docs/nginx.md)** - Reverse proxy oppsett
+## 📚 Development Modes
+
+The project supports multiple development modes depending on what you're working on:
+
+### 1. Full Production (All services in Docker)
+```bash
+docker compose up -d --build
+# Frontend: http://localhost:3000
+# Backend: http://localhost:8080
+# Database: localhost:5432
+```
+
+### 2. Frontend Development (Backend + DB in Docker)
+```bash
+spondy frontend
+# Frontend: http://localhost:5173 (local development)
+# Backend: http://localhost:8080 (Docker)
+```
+
+### 3. Backend Development (Frontend + DB in Docker)
+```bash
+spondy backend
+# Frontend: http://localhost:3000 (Docker)
+# Backend: http://localhost:8080 (local development)
+```
+
+### 4. Full Local Development (Only DB in Docker)
+```bash
+spondy fullstack
+# Frontend: http://localhost:5173 (local)
+# Backend: http://localhost:8080 (local)
+# Database: localhost:5432 (Docker)
+```
+
+## 🔧 Troubleshooting
+
+### Java Issues
+If you get Java-related errors:
+```bash
+# Install Java 17 via Homebrew (macOS)
+brew install openjdk@17
+
+# Or check if Java is properly installed
+java -version
+```
+
+### Port Conflicts
+If ports are busy, the system will automatically use alternative ports:
+- Frontend: 5173 → 5174
+- Backend: 8080 (fixed)
+- Database: 5432 (fixed)
+
+### Database Connection Issues
+```bash
+# Check if database is running
+spondy status
+
+# View logs for debugging
+spondy logs
+
+# Clean restart
+spondy cleanup
+spondy fullstack
+```
+
+## 📖 Documentation
+
+- **[docs/](docs/)** - Complete documentation
+- **[Development Guide](docs/development.md)** - Local development setup
+- **[Production Deployment](docs/deployment.md)** - Production deployment guide
+- **[Nginx Configuration](docs/nginx.md)** - Reverse proxy setup
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

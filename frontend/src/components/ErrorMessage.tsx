@@ -31,7 +31,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
           
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Noe gikk galt
+            Something went wrong
           </h2>
           
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
@@ -41,11 +41,11 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
           </div>
           
           <div className="text-sm text-gray-600 mb-6">
-            <p>Hvis problemet vedvarer, kan du:</p>
+            <p>If the problem persists, you can:</p>
             <ul className="mt-2 space-y-1 text-left">
-              <li>• Sjekke internettforbindelsen din</li>
-              <li>• Prøve å laste siden på nytt</li>
-              <li>• Kontakte support hvis feilen fortsetter</li>
+              <li>• Check your internet connection</li>
+              <li>• Try refreshing the page</li>
+              <li>• Contact support if the error continues</li>
             </ul>
           </div>
           
@@ -55,7 +55,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
               className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
-              Prøv igjen
+              Try again
             </button>
             
             {showHomeButton && (
@@ -64,7 +64,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
                 className="flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 <Home className="w-4 h-4 mr-2" />
-                Tilbake til forsiden
+                Back to home
               </button>
             )}
           </div>

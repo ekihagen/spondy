@@ -21,19 +21,19 @@ export const ClosedBanner: React.FC<ClosedBannerProps> = ({ form }) => {
         <div className="bg-white rounded-lg shadow-lg p-8 text-center">
           <Clock className="w-16 h-16 text-orange-500 mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{form.title}</h1>
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-6">
-            <div className="flex items-center justify-center mb-2">
-              <Calendar className="w-5 h-5 text-orange-600 mr-2" />
-              <span className="text-orange-800 font-medium">Registrering stengt</span>
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-6">
+              <div className="flex items-center justify-center mb-2">
+                <Calendar className="w-5 h-5 text-orange-600 mr-2" />
+                <span className="text-orange-800 font-medium">Registration closed</span>
+              </div>
+              <p className="text-orange-700">
+                Registration opened {formatDate(form.registrationOpens)}
+              </p>
             </div>
-            <p className="text-orange-700">
-              Registreringen åpnet {formatDate(form.registrationOpens)}
+            <p className="text-gray-600 mb-6">{form.description}</p>
+            <p className="text-sm text-gray-500">
+              Contact the club directly if you have questions about registration.
             </p>
-          </div>
-          <p className="text-gray-600 mb-6">{form.description}</p>
-          <p className="text-sm text-gray-500">
-            Kontakt klubben direkte hvis du har spørsmål om registrering.
-          </p>
         </div>
       </div>
     </div>

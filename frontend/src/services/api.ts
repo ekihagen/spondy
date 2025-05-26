@@ -14,7 +14,7 @@ const API_BASE_URL = getApiBaseUrl();
 
 // Helper function to handle API errors with user-friendly messages
 const handleApiError = async (response: Response): Promise<never> => {
-  let errorMessage = 'En uventet feil oppstod. Prøv igjen senere.';
+  let errorMessage = 'An unexpected error occurred. Please try again later.';
   
   try {
     const errorData = await response.json();
@@ -31,16 +31,16 @@ const handleApiError = async (response: Response): Promise<never> => {
     // If we can't parse the error response, use status-based messages
     switch (response.status) {
       case 400:
-        errorMessage = 'Ugyldig forespørsel. Sjekk at alle felt er riktig utfylt.';
+        errorMessage = 'Invalid request. Please check that all fields are correctly filled out.';
         break;
       case 404:
-        errorMessage = 'Registreringsskjema ikke funnet.';
+        errorMessage = 'Registration form not found.';
         break;
       case 500:
-        errorMessage = 'Serverfeil. Prøv igjen senere.';
+        errorMessage = 'Server error. Please try again later.';
         break;
       default:
-        errorMessage = `Feil ${response.status}: ${response.statusText}`;
+        errorMessage = `Error ${response.status}: ${response.statusText}`;
     }
   }
   
@@ -59,7 +59,7 @@ export const api = {
       const result = await response.json();
       
       if (!result.success) {
-        throw new Error(result.message || 'Kunne ikke hente registreringsskjema');
+        throw new Error(result.message || 'Could not fetch registration form');
       }
       
       return result.data;
@@ -67,7 +67,7 @@ export const api = {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('Kunne ikke koble til serveren. Sjekk internettforbindelsen din.');
+      throw new Error('Could not connect to server. Please check your internet connection.');
     }
   },
 
@@ -92,11 +92,11 @@ export const api = {
           throw new Error(`${result.message}\n\n${fieldErrorMessages}`);
         }
         
-        throw new Error(result.message || 'Registrering feilet');
+        throw new Error(result.message || 'Registration failed');
       }
       
       if (!result.success) {
-        throw new Error(result.message || 'Registrering feilet');
+        throw new Error(result.message || 'Registration failed');
       }
       
       return {
@@ -109,7 +109,7 @@ export const api = {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('Kunne ikke koble til serveren. Sjekk internettforbindelsen din.');
+      throw new Error('Could not connect to server. Please check your internet connection.');
     }
   },
 }; 
