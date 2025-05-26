@@ -30,4 +30,12 @@ export interface RegistrationResponse {
   success: boolean;
   message: string;
   registrationId?: number;
+  memberName?: string;
+}
+
+export interface ApiError {
+  success: false;
+  message: string;
+  error: string;
+  fieldErrors?: Record<string, string>;
 } 

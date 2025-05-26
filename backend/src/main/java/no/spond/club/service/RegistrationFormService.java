@@ -12,13 +12,21 @@ import java.util.List;
 @Transactional
 public class RegistrationFormService {
     
+    private static final List<String> ALLOWED_MEMBER_TYPES = Arrays.asList(
+        "8FE4113D4E4020E0DCF887803A886981", // Active Member
+        "4237C55C5CC3B4B082CBF2540612778E"  // Social Member
+    );
+    
     public RegistrationFormService() {
         // Constructor for service with hardcoded data
     }
     
     @Transactional(readOnly = true)
     public RegistrationFormDto getFormById(Long id) {
-        return getDefaultForm(); // Return the same form for any ID
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Ugyldig skjema-ID");
+        }
+        return getDefaultForm(); // Return the same form for any valid ID
     }
     
     @Transactional(readOnly = true)
@@ -40,36 +48,76 @@ public class RegistrationFormService {
     }
     
     public Long registerMember(Long formId, RegistrationRequestDto request) {
-        // Validate birth date format and that it's in the past
-        if (!request.isValidBirthDate()) {
-            throw new RuntimeException("Ugyldig fødselsdato. Må være i format DD.MM.YYYY og i fortiden.");
+        // Validate form ID
+        if (formId == null || formId <= 0) {
+            throw new IllegalArgumentException("Ugyldig skjema-ID");
         }
         
-        // Validate phone number is numeric only
-        if (!request.getPhoneNumber().matches("^\\d{8,11}$")) {
-            throw new RuntimeException("Telefonnummer må være mellom 8-11 siffer og kun inneholde tall.");
+        // Validate request object
+        if (request == null) {
+            throw new IllegalArgumentException("Registreringsdata mangler");
+        }
+        
+        // Validate birth date format and that it's in the past
+        if (!request.isValidBirthDate()) {
+            throw new IllegalArgumentException("Ugyldig fødselsdato. Må være i format DD.MM.YYYY og i fortiden.");
+        }
+        
+        // Validate phone number is numeric only and correct length
+        String phoneNumber = request.getPhoneNumber();
+        if (phoneNumber == null || !phoneNumber.matches("^\\d{8,11}$")) {
+            throw new IllegalArgumentException("Telefonnummer må være mellom 8-11 siffer og kun inneholde tall.");
         }
         
         // Validate that memberTypeId is one of the allowed values
-        List<String> allowedMemberTypes = Arrays.asList(
-            "8FE4113D4E4020E0DCF887803A886981", // Active Member
-            "4237C55C5CC3B4B082CBF2540612778E"  // Social Member
-        );
-        
-        if (!allowedMemberTypes.contains(request.getMemberTypeId())) {
-            throw new RuntimeException("Ugyldig medlemstype valgt.");
+        if (!ALLOWED_MEMBER_TYPES.contains(request.getMemberTypeId())) {
+            throw new IllegalArgumentException("Ugyldig medlemstype valgt. Vennligst velg en gyldig medlemstype.");
         }
         
-        // Log the registration details for debugging
-        System.out.println("Registrering mottatt:");
+        // Validate email format (additional check beyond annotation)
+        String email = request.getEmail();
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new IllegalArgumentException("Ugyldig e-postadresse format.");
+        }
+        
+        // Validate full name is not just whitespace
+        String fullName = request.getFullName();
+        if (fullName == null || fullName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Fullt navn kan ikke være tomt.");
+        }
+        
+        // Log the registration details for debugging (in real app, use proper logging)
+        System.out.println("=== REGISTRERING MOTTATT ===");
+        System.out.println("Skjema-ID: " + formId);
         System.out.println("Navn: " + request.getFullName());
         System.out.println("E-post: " + request.getEmail());
         System.out.println("Telefon: " + request.getPhoneNumber());
         System.out.println("Fødselsdato: " + request.getBirthDate());
         System.out.println("Medlemstype: " + request.getMemberTypeId());
+        System.out.println("Tidspunkt: " + LocalDateTime.now());
+        System.out.println("============================");
         
         // Simple registration logic - in real app would save to database
-        return System.currentTimeMillis(); // Return a unique registration ID
+        // Generate a unique registration ID based on current time and hash
+        long registrationId = System.currentTimeMillis() + request.hashCode();
+        
+        System.out.println("Registrering fullført med ID: " + registrationId);
+        
+        return registrationId;
+    }
+    
+    /**
+     * Helper method to get member type name by ID
+     */
+    public String getMemberTypeName(String memberTypeId) {
+        switch (memberTypeId) {
+            case "8FE4113D4E4020E0DCF887803A886981":
+                return "Active Member";
+            case "4237C55C5CC3B4B082CBF2540612778E":
+                return "Social Member";
+            default:
+                return "Ukjent medlemstype";
+        }
     }
 }
  

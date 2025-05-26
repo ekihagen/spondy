@@ -24,7 +24,7 @@ type FormData = z.infer<typeof registrationSchema>;
 
 export const RegistrationWizard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { form, loading, error, submitting, submitted, submitRegistration, isRegistrationOpen } = useRegistrationForm();
+  const { form, loading, error, submitting, submitted, registrationResponse, submitRegistration, isRegistrationOpen } = useRegistrationForm();
   
   const {
     register,
@@ -51,7 +51,13 @@ export const RegistrationWizard: React.FC = () => {
   }
 
   if (submitted) {
-    return <SuccessMessage />;
+    return (
+      <SuccessMessage 
+        memberName={registrationResponse?.memberName}
+        registrationId={registrationResponse?.registrationId}
+        message={registrationResponse?.message}
+      />
+    );
   }
 
   if (!isRegistrationOpen()) {
@@ -73,7 +79,7 @@ export const RegistrationWizard: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     try {
       await submitRegistration(data as RegistrationRequest);
-    } catch (err) {
+    } catch {
       // Error is handled by the hook
     }
   };
