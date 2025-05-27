@@ -26,7 +26,13 @@ public class RegistrationFormService {
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("Ugyldig skjema-ID");
         }
-        return getDefaultForm(); // Return the same form for any valid ID
+        
+        // Validate that the form ID is the expected one
+        if (!"B171388180BC457D9887AD92B6CCFC86".equals(id)) {
+            throw new IllegalArgumentException("Ugyldig skjema-ID");
+        }
+        
+        return getDefaultForm(); // Return the form for the valid ID
     }
     
     @Transactional(readOnly = true)
@@ -110,6 +116,10 @@ public class RegistrationFormService {
      * Helper method to get member type name by ID
      */
     public String getMemberTypeName(String memberTypeId) {
+        if (memberTypeId == null) {
+            return "Ukjent medlemstype";
+        }
+        
         switch (memberTypeId) {
             case "8FE4113D4E4020E0DCF887803A886981":
                 return "Active Member";

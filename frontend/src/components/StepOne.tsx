@@ -31,20 +31,20 @@ export const StepOne: React.FC<StepOneProps> = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-6">
       {/* Member types */}
       <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
           <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
             <CreditCard className="w-4 h-4 text-white" />
           </div>
           Select membership type
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {form.memberTypes.map((memberType) => (
             <div
               key={memberType.id}
-              className={`group border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+              className={`group border-2 rounded-xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
                 selectedMemberTypeId === memberType.id
                   ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50 ring-2 ring-blue-200 shadow-lg'
                   : 'border-gray-200 hover:border-blue-300 bg-white hover:bg-gray-50'
@@ -85,7 +85,7 @@ export const StepOne: React.FC<StepOneProps> = ({
 
       {/* Summary */}
       {selectedMemberType && (
-        <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-xl p-6 border border-blue-200 shadow-md">
+        <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-xl p-4 sm:p-6 border border-blue-200 shadow-md">
           <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
             <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-2">
               <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -109,7 +109,7 @@ export const StepOne: React.FC<StepOneProps> = ({
           type="button"
           onClick={onNext}
           disabled={!canProceed}
-          className={`flex items-center px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform ${
+          className={`flex items-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform ${
             canProceed
               ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl hover:scale-105'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
